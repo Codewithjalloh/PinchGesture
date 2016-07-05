@@ -27,7 +27,21 @@ class ViewController: UIViewController {
     }
     
     @IBAction func pinchGesture(sender: UIPinchGestureRecognizer) {
-        let factor = sender
+        let factor = sender.scale
+        if (factor > 1) {
+            // increase zoom
+            sender.view?.transform = CGAffineTransformMakeScale(lastScaleFactor + (factor-1), lastScaleFactor + (factor-1))
+        } else {
+            // decrease zoom
+            sender.view?.transform = CGAffineTransformMakeScale(lastScaleFactor * factor, lastScaleFactor * factor-1)
+        }
+        if (sender.state == UIGestureRecognizerState.Ended){
+            if (factor > 1) {
+                lastScaleFactor += (factor-1)
+            }else {
+                lastScaleFactor *= factor
+            }
+        }
     }
 
 
